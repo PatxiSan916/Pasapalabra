@@ -1,4 +1,4 @@
-const magicString = {
+const magicStrings = {
   unanswered: "unanswered",
   rightAnswered: "rightAnswered",
   wrongAnswered: "wrongAnswered",
@@ -11,7 +11,7 @@ class Question {
     this.letter = letter;
     this.question = question;
     this.answer = answer;
-    this.answerState = magicString.unanswered;
+    this.answerState = magicStrings.unanswered;
   }
 
   getQuestion() {
@@ -29,10 +29,10 @@ class Question {
   answerQuestion(answer) {
     let isCorrect = null;
     if (answer?.toLowerCase() === this.answer.toLowerCase()) {
-      this.answerState = magicString.rightAnswered;
+      this.answerState = magicStrings.rightAnswered;
       isCorrect = true;
     } else {
-      this.answerState = magicString.wrongAnswered;
+      this.answerState = magicStrings.wrongAnswered;
       isCorrect = false;
     }
     return isCorrect;
@@ -172,7 +172,7 @@ const letters = [
 const questionsArray = [];
 
 letters.forEach((letter) => {
-  let letterQuestions = questions.filter(
+  const letterQuestions = questions.filter(
     (question) => question.letter === letter
   );
   questionsArray.push(
@@ -190,8 +190,16 @@ function play() {
 function submitAnswer(answer) {
   currentQuestion.answerQuestion(answer);
   const buble = document.getElementById(currentQuestion.letter);
-  buble.style.backgroundColor = currentQuestion.isCorrect
-    ? magicString.green
-    : magicString.red;
+  switch (currentQuestion.answerState) {
+    case magicStrings.rightAnswered:
+      buble.style.backgroundColor = green;
+      break;
+    case magicStrings.wrongAnswered:
+      buble.style.backgroundColor = red;
+      break;
+    case magicStrings.unanswered:
+      buble.style.backgroundColor = blue;
+      break;
+  }
 }
 play();
